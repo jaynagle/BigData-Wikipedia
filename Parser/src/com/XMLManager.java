@@ -20,10 +20,8 @@ public class XMLManager {
 
 			SAXParser parser = factory.newSAXParser();
 			XMLReader xmlReader = parser.getXMLReader();
-			String file = "/media/anwar/825ED72B5ED716AF/Wikipedia/enwiki-20151201-pages-meta-current.xml.bz2";
-
-			// String file = "D:/Wikipedia
-			// DataSet/enwiki-20151201-pages-meta-current/jay.xml";
+			//String file = "/media/anwar/825ED72B5ED716AF/Wikipedia/enwiki-20151201-pages-meta-current.xml.bz2";
+			String file = "enwiki-20151201-pages-meta-current.xml.bz2";
 
 			xmlReader.setContentHandler(new PageHandler(xmlReader));
 			FileInputStream fis = new FileInputStream(file);
