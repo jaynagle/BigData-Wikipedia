@@ -55,9 +55,6 @@ public class PageHandler extends DefaultHandler {
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
-		if (count > 10000)
-			System.exit(0);
-
 		if ("page".equals(qName)) {
 			count++;
 			xmlBuilder = new StringBuilder();
