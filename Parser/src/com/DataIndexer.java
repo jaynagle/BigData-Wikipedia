@@ -52,7 +52,7 @@ public class DataIndexer {
 		else
 		{
 			// emit exception
-			throw new Exception("Data Indexer is not Intialized!");
+			throw new Exception("Data Indexer is not Intialized.");
 		}
 	}
 	
