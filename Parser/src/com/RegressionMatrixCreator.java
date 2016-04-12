@@ -76,11 +76,6 @@ public class RegressionMatrixCreator {
 				fw.flush();
 				fw.close();
 				
-				if(pageTitle.equalsIgnoreCase("Recession"))
-				{
-					System.out.println("here");
-				}
-				
 				top50Words = sortByValue(top50Words);
 				
 				List<String> lstStemmedTitle = new ArrayList<String>();
