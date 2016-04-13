@@ -75,9 +75,9 @@ public class RegressionMatrixCreator {
 				}
 				filewriter.flush();
 				filewriter.close();
-				
+
 				topWords = sortByValue(topWords);
-				
+
 				List<String> lstStemmedTitle = new ArrayList<String>();
 				PorterStemmer stemmer = new PorterStemmer();
 				for(String word : lstPageTitle)
@@ -87,7 +87,7 @@ public class RegressionMatrixCreator {
 					String newWord = stemmer.getCurrent();
 					lstStemmedTitle.add(newWord);
 				}
-				
+
 				int topN = 10;
 				Map<String, Integer> top10Words = new HashMap<String, Integer>();
 				int count = 0;
@@ -104,7 +104,7 @@ public class RegressionMatrixCreator {
 						break;
 					}
 				}
-				
+
 				int matchCount = 0;
 				for(String stemmedTitleWord : lstStemmedTitle)
 				{
@@ -114,9 +114,9 @@ public class RegressionMatrixCreator {
 					}
 				}
 				float titleScore = (float)((float)matchCount / lstStemmedTitle.size());
-				
-				 matrixRow = "\"" + pageTitle + "\"," + titleScore + matrixRow + "," + pageLength +"\n";
-				
+
+				matrixRow = "\"" + pageTitle + "\"," + titleScore + matrixRow + "," + pageLength +"\n";
+
 				summaryFileWriter.write(matrixRow);
 
 			}	
@@ -125,28 +125,28 @@ public class RegressionMatrixCreator {
 				e.printStackTrace();
 			}
 		}
-		
+
 		summaryFileWriter.flush();
 		summaryFileWriter.close();
 
 	}
-	
-	static Map sortByValue(Map map) {
-	     List list = new LinkedList(map.entrySet());
-	     Collections.sort(list, new Comparator() {
-	          public int compare(Object o1, Object o2) {
-	               return ((Comparable) ((Map.Entry) (o2)).getValue())
-	              .compareTo(((Map.Entry) (o1)).getValue());
-	          }
-	     });
 
-	    Map result = new LinkedHashMap();
-	    for (Iterator it = list.iterator(); it.hasNext();) {
-	        Map.Entry entry = (Map.Entry)it.next();
-	        result.put(entry.getKey(), entry.getValue());
-	    }
-	    
-	    return result;
+	static Map sortByValue(Map map) {
+		List list = new LinkedList(map.entrySet());
+		Collections.sort(list, new Comparator() {
+			public int compare(Object o1, Object o2) {
+				return ((Comparable) ((Map.Entry) (o2)).getValue())
+						.compareTo(((Map.Entry) (o1)).getValue());
+			}
+		});
+
+		Map result = new LinkedHashMap();
+		for (Iterator it = list.iterator(); it.hasNext();) {
+			Map.Entry entry = (Map.Entry)it.next();
+			result.put(entry.getKey(), entry.getValue());
+		}
+
+		return result;
 	} 
 
 }
