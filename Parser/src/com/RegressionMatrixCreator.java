@@ -119,8 +119,7 @@ public class RegressionMatrixCreator {
 				
 				summaryFileWriter.write(matrixRow);
 
-			}
-			
+			}	
 			catch(Exception e)
 			{
 				e.printStackTrace();
