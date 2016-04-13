@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 public class PlainFileReader {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 		//final Pattern pattern = Pattern.compile("<page><title>(.+?)</title>.*<id>(.+?)</id><text xml:space=\\\"preserve\\\">(.*?)</text>.*?</page>", Pattern.DOTALL);
 		final Pattern pattern = Pattern.compile("<page><title>(.*?)</title>.*?<id>(.*?)</id>.*?<text xml:space=\\\"preserve\\\">(.*?)</text>.*?</page>", Pattern.DOTALL);
@@ -20,7 +19,6 @@ public class PlainFileReader {
 		try 
 		{
 			file = new String(Files.readAllBytes(Paths.get("/media/anwar/825ED72B5ED716AF1/Wikipedia/PlainFiles/abc2.xml")));
-			//System.out.println("File:" + file);
 			
 			//file = "<page><title>Tilte1</title>ndsdfs<id>100</id><text xml:space=\"preserve\">This is \n sample \n text</text></page>";
 			final Matcher matcher = pattern.matcher(file);
