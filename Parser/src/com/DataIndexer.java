@@ -59,16 +59,16 @@ public class DataIndexer {
 	public void intialize() throws IOException
 	{
 		List<String> stopWords = new ArrayList<String>();
-		Scanner fReader = new Scanner(new File("/home/anwar/stopwords1.csv"));
-		while(fReader.hasNextLine())
+		Scanner stopWordReader = new Scanner(new File("/home/anwar/stopwords1.csv"));
+		while(stopWordReader.hasNextLine())
 		{
-			stopWords.add(fReader.nextLine());
+			stopWords.add(stopWordReader.nextLine());
 		}
-		fReader.close();
+		stopWordReader.close();
 		CharArraySet newOne = new CharArraySet(stopWords, true);
 		CharArraySet charASet = EnglishAnalyzer.getDefaultStopSet();
 		newOne.addAll(charASet);
-		//CharArraySet charASet = new CharArraySet(stopWords, true);
+
 		Analyzer analyzer = new EnglishAnalyzer(newOne);	
 		IndexWriterConfig config = new IndexWriterConfig(analyzer);
 		FSDirectory directory = FSDirectory.open(Paths.get("/media/anwar/825ED72B5ED716AF1/Wikipedia/index_SS1"));
