@@ -36,11 +36,11 @@ public class RegressionMatrixCreator {
 		String summeryOutputFile = "/home/anwar/PagesOut1/Summary.csv";
 		File summaryFile = new File(summeryOutputFile);
 		summaryFile.createNewFile();
-		FileWriter fw1 = new FileWriter(summaryFile);
+		FileWriter summaryFileWriter = new FileWriter(summaryFile);
 
 		for(int documentIndex = 0; documentIndex<indexReader.maxDoc(); documentIndex++)
 		{
-			Map<String, Integer> top50Words = new HashMap<String, Integer>();
+			Map<String, Integer> topWords = new HashMap<String, Integer>();
 			try
 			{
 				Document document = indexReader.document(documentIndex);
@@ -51,7 +51,7 @@ public class RegressionMatrixCreator {
 				String fileName = outputDirectory + pageTitle + ".csv";
 				File outFile = new File(fileName);
 				outFile.createNewFile();
-				FileWriter fw = new FileWriter(outFile);
+				FileWriter filewriter = new FileWriter(outFile);
 				Terms termVector = indexReader.getTermVector(documentIndex, "Page_Text");
 				TermsEnum te = termVector.iterator();
 				BytesRef term = null;
@@ -64,19 +64,19 @@ public class RegressionMatrixCreator {
 						//System.out.println(termText);
 						postings = te.postings(postings, PostingsEnum.FREQS);
 						postings.nextDoc();
-						int freq = postings.freq();
-						fw.write("\""+termText + "\"," + freq + "\n");
-						top50Words.put(termText, freq);
+						int wordFreq = postings.freq();
+						filewriter.write("\""+termText + "\"," + wordFreq + "\n");
+						topWords.put(termText, wordFreq);
 					}
 					catch(Exception e)
 					{
 						e.printStackTrace();
 					}
 				}
-				fw.flush();
-				fw.close();
+				filewriter.flush();
+				filewriter.close();
 				
-				top50Words = sortByValue(top50Words);
+				topWords = sortByValue(topWords);
 				
 				List<String> lstStemmedTitle = new ArrayList<String>();
 				PorterStemmer stemmer = new PorterStemmer();
@@ -92,9 +92,9 @@ public class RegressionMatrixCreator {
 				Map<String, Integer> top10Words = new HashMap<String, Integer>();
 				int count = 0;
 				String matrixRow = "";
-				for(String word: top50Words.keySet())
+				for(String word: topWords.keySet())
 				{
-					int freq = top50Words.get(word);
+					int freq = topWords.get(word);
 					top10Words.put(word.toLowerCase(), freq);
 					matrixRow += ",\"" + word +"\"," +freq;
 					if(count < topN){ 
@@ -117,7 +117,7 @@ public class RegressionMatrixCreator {
 				
 				 matrixRow = "\"" + pageTitle + "\"," + titleScore + matrixRow + "," + pageLength +"\n";
 				
-				fw1.write(matrixRow);
+				summaryFileWriter.write(matrixRow);
 
 			}
 			
@@ -127,8 +127,8 @@ public class RegressionMatrixCreator {
 			}
 		}
 		
-		fw1.flush();
-		fw1.close();
+		summaryFileWriter.flush();
+		summaryFileWriter.close();
 
 	}
 	
