@@ -5,7 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -16,7 +18,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -29,17 +30,22 @@ public class PageHandler extends DefaultHandler {
 	private static final Pattern PATTERN = Pattern.compile("\\[\\[Category:([^|]+?)[| ]*\\]\\]");
 	private static final Properties PROPS = readProps();
 	private static final Set<String> KEYWORDS = getKeyWords();
+	private static final Set<String> TITLES = getTitles();
 
 	int count = 0;
 	private String pageid;
 	private StringBuilder categories = new StringBuilder();
 	private final XMLReader xmlReader;
 	private StringBuilder xmlBuilder = new StringBuilder();
+	private StringBuilder pageBuilder = new StringBuilder();
+	private String parentTag;
 	private String currentTag;
 	private boolean isIgnore = false;
 	private FileWriter fileWriter = null;
 	File outputFile = null;
 	private int writeCount = 0;
+	private Page page;
+	private static List<String> tagList = getTagList();
 
 	public PageHandler(XMLReader xmlReader) {
 		this.xmlReader = xmlReader;
@@ -54,13 +60,19 @@ public class PageHandler extends DefaultHandler {
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-
+		
+		xmlBuilder = new StringBuilder();
+		pageBuilder = new StringBuilder();
 		if ("page".equals(qName)) {
+			page = new Page();
 			count++;
-			xmlBuilder = new StringBuilder();
 			xmlBuilder.append("<" + qName);
 		} else {
 			xmlBuilder.append("<" + qName);
+		}
+		
+		if(currentTag != null){
+			parentTag = currentTag;
 		}
 		currentTag = qName;
 
@@ -87,20 +99,18 @@ public class PageHandler extends DefaultHandler {
 
 		String characterData = (new String(ch, start, length)).trim();
 		xmlBuilder.append(characterData);
+		pageBuilder.append(characterData);
 
-		if ("text".equals(currentTag) && categories.length() == 0) {
+		if("title".equals(currentTag) && TITLES.contains(currentTag.toLowerCase())){
+			isIgnore = false;
+			categories.append("DUMMY");
+		} else if ("text".equals(currentTag) && categories.length() == 0) {
 
 			if(characterData.contains("Category:"))
 			{
-//				System.out.println(characterData);
-
 				Matcher m = PATTERN.matcher(characterData);
 
 				while (m.find()) {
-//					String category = m.group();
-//					int st = category.indexOf(":");
-//					int end = category.indexOf("]]");
-//					String cat = category.substring(st + 1, end);
 					String cat = m.group(1);
 					categories.append(cat);
 					if (!KEYWORDS.contains(cat)) {
@@ -118,13 +128,31 @@ public class PageHandler extends DefaultHandler {
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 
+		currentTag = null;
 		xmlBuilder.append("</" + qName + ">");
+		if(tagList.contains(qName)){
+			switch (qName) {
+			case "title":
+				page.setTitle(pageBuilder.toString());
+				break;
+			case "id":
+				if("page".equals(parentTag))
+					page.setPageID(pageBuilder.toString());
+				break;
+			case "text":
+				page.setPageText(pageBuilder.toString());
+				break;	
+			default:
+				break;
+			}
+		}
 
 		if ("page".equals(qName)) {
 
 			if (!isIgnore && categories.length() > 0) {
 				//				System.out.println(xmlBuilder);
 				//writeToDatabase();
+				System.out.println(page.getPageID() + " : "+ page.getTitle());
 				writeToFile();
 			} else {
 				isIgnore = false;
@@ -136,11 +164,23 @@ public class PageHandler extends DefaultHandler {
 
 	private static Set<String> getKeyWords() {
 		Set<String> words = new HashSet<>();
+
 		String[] keywords = PROPS.getProperty("keywords").split(",");
 		for (String p : keywords) {
 			words.add(p);
 		}
+
 		return words;
+	}
+	
+	private static Set<String> getTitles() {
+		Set<String> titles = new HashSet<>();
+		
+		String[] titleArray = PROPS.getProperty("titles").split(",");
+		for (String p : titleArray) {
+			titles.add(p.toLowerCase());
+		}
+		return titles;
 	}
 
 	private void writeToDatabase() {
@@ -214,5 +254,13 @@ public class PageHandler extends DefaultHandler {
 			e.printStackTrace();
 		}
 		super.endDocument();
+	}
+	
+	private static List<String> getTagList(){
+		tagList = new ArrayList<>();
+		tagList.add("title");
+		tagList.add("id");
+		tagList.add("text");
+		return tagList;
 	}
 }

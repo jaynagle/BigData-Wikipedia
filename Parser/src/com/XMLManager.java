@@ -12,19 +12,26 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
-public class XMLManager {
-	public static void load(PageProcessor processor) {
-		SAXParserFactory factory = SAXParserFactory.newInstance();
+public class XMLManager implements Runnable {
+	private Thread thread;
+	private String threadName;
+	private String fileName;
 
+	public XMLManager(String threadName, String fileName) {
+		this.threadName = threadName;
+		this.fileName = fileName;
+	}
+
+	public void load(PageProcessor processor) {
+		SAXParserFactory factory = SAXParserFactory.newInstance();
 		try {
 
 			SAXParser parser = factory.newSAXParser();
 			XMLReader xmlReader = parser.getXMLReader();
-			//String file = "/media/anwar/825ED72B5ED716AF/Wikipedia/enwiki-20151201-pages-meta-current.xml.bz2";
-			String file = "enwiki-20151201-pages-meta-current.xml.bz2";
+			// String file = "enwiki-20151201-pages-meta-current.xml.bz2";
 
 			xmlReader.setContentHandler(new PageHandler(xmlReader));
-			FileInputStream fis = new FileInputStream(file);
+			FileInputStream fis = new FileInputStream(fileName);
 			BZip2CompressorInputStream bzIn = new BZip2CompressorInputStream(fis);
 			InputSource inputSource = new InputSource(bzIn);
 			xmlReader.parse(inputSource);
@@ -36,6 +43,24 @@ public class XMLManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("###### "+ threadName +" processing completed ######");
+	}
+
+	@Override
+	public void run() {
+		//System.out.println("Called for " + fileName + " from " + threadName);
+		load(new PageProcessor() {
+			@Override
+			public void process(Page page) {
+			}
+		});
 
 	}
+
+	public void start() {
+		//System.out.println("Starting " + threadName);
+		thread = new Thread(this, threadName);
+		thread.start();
+	}
+
 }
