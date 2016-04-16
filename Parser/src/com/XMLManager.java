@@ -35,6 +35,7 @@ public class XMLManager implements Runnable {
 			BZip2CompressorInputStream bzIn = new BZip2CompressorInputStream(fis);
 			InputSource inputSource = new InputSource(bzIn);
 			xmlReader.parse(inputSource);
+			System.out.println("###### "+ threadName +" processing completed ######");
 
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
@@ -43,7 +44,13 @@ public class XMLManager implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("###### "+ threadName +" processing completed ######");
+		finally 
+		{
+			//System.out.println("Closing Thread- " + threadName);
+			DataIndexer.getInstance().threadClosing();
+		}
+		
+		
 	}
 
 	@Override

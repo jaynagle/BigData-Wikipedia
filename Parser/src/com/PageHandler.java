@@ -153,7 +153,7 @@ public class PageHandler extends DefaultHandler {
 				//				System.out.println(xmlBuilder);
 				//writeToDatabase();
 				System.out.println(page.getPageID() + " : "+ page.getTitle());
-				writeToFile();
+				DataIndexer.getInstance().addPage(page);
 			} else {
 				isIgnore = false;
 			}

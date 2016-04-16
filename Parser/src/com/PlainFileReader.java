@@ -22,8 +22,8 @@ public class PlainFileReader {
 			
 			//file = "<page><title>Tilte1</title>ndsdfs<id>100</id><text xml:space=\"preserve\">This is \n sample \n text</text></page>";
 			final Matcher matcher = pattern.matcher(file);
-			DataIndexer indexer = new DataIndexer();
-			indexer.intialize();
+			DataIndexer indexer = DataIndexer.getInstance();
+			indexer.intialize(100);
 			while (matcher.find()) 
 			{				
 				

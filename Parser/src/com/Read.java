@@ -1,22 +1,33 @@
 package com;
 
 import java.io.File;
+import java.io.IOException;
 
 public class Read {
-	private static String dir = "./page-articles";
+	private static String dir = "./parts";
 
 	public static void main(String[] args) {
 		System.out.println("###### XML Parsing Started ######");
 
-		Read read = new Read();
-		String fileName = null;
-		File folder = new File(dir);
-		int number = 1;
-		for (final File fileEntry : folder.listFiles()) {
-			if (!fileEntry.isDirectory()) {
-				fileName = dir + "/" + fileEntry.getName();
-				read.createExtractorThread(number++, fileName);
+		try
+		{
+			Read read = new Read();
+			String fileName = null;
+			File folder = new File(dir);
+			int fileCount = folder.listFiles().length;
+			int number = 1;
+			DataIndexer.getInstance().intialize(fileCount);
+			for (final File fileEntry : folder.listFiles()) {
+				if (!fileEntry.isDirectory()) {
+					fileName = dir + "/" + fileEntry.getName();
+					read.createExtractorThread(number++, fileName);
+				}
 			}
+		}
+		catch(IOException e)
+		{
+			System.out.println("Error Initalizing Data Indexer");
+			e.printStackTrace();
 		}
 
 		//System.out.println("###### XML Parsing Successfully done ######");
