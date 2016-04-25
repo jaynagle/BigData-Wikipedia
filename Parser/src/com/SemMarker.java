@@ -34,7 +34,7 @@ public class SemMarker {
 				}
 
 				//print the forms
-				for (String l : i.forms) System.out.println("form : "+l);
+				for (String l : i.forms) System.out.println("form :  "+l);
 		
 		ParseOptions parse = new ParseOptions(new String[]{"eng", "/home/anwar/Downloads/corpus.txt" ,"/home/anwar/Downloads/srl-eng.model", "/home/anwar/Downloads/output-test.txt"});
 		SemanticRoleLabeler ab = new se.lth.cs.srl.pipeline.Reranker(parse);
