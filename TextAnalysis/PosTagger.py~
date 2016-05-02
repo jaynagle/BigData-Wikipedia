@@ -1,3 +1,5 @@
+#POS-Tagging the Annotated text
+
 import os
 import nltk
 from nltk.corpus import wordnet as wn
@@ -15,6 +17,8 @@ csv.register_dialect('lineterminator',lineterminator='\n')
 writer = csv.writer(f, dialect = csv.get_dialect('lineterminator'))
 
 writer.writerow(('Cause', 'Cause_Nouns', 'Action', 'Effect', 'Effect_Nouns', 'FileName'))
+
+#POS-Tagging the 'effects' obtained from SRL Annotated text
 
 for file in os.listdir(path):
     with open(path + file) as csvfile:

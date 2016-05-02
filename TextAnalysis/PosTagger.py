@@ -1,4 +1,5 @@
 #POS-Tagging the Annotated text
+#Author: Sanjana Pukalay
 
 import os
 import nltk
