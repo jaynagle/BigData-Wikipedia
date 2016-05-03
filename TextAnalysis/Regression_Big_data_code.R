@@ -1,5 +1,5 @@
 ### Mid term presentation regression ####
-
+##Author Vinay Vernekar
 
 setwd("C:\\Second Sem\\Big Data and Analytics")
 
