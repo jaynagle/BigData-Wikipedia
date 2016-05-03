@@ -24,7 +24,13 @@ import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 
-
+/**
+ * This class represents a SAX parser component and is handles input XML data
+ * character by character.
+ * 
+ * @author Anwar Shaikh/Jay Nagle
+ *
+ */
 public class PageHandler extends DefaultHandler {
 
 	private static final Pattern PATTERN = Pattern.compile("\\[\\[Category:([^|]+?)[| ]*\\]\\]");

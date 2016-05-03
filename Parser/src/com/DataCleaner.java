@@ -17,6 +17,12 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Wiki XML page extractor to find frequency of years and dump it in a CSV file.
+ * 
+ * @author Jay Nagle
+ *
+ */
 public class DataCleaner {
 	private static Pattern pattern = Pattern.compile("(19|20)\\d{2}");
 	private static Pattern pattern_title = Pattern.compile("<title>.*<\\/title>");

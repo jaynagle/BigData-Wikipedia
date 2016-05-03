@@ -6,6 +6,12 @@ import de.tudarmstadt.ukp.wikipedia.api.Wikipedia;
 import de.tudarmstadt.ukp.wikipedia.api.exception.WikiApiException;
 import de.tudarmstadt.ukp.wikipedia.api.exception.WikiInitializationException;
 
+/**
+ * This class is a part of POC done for dataset parsing using JWPL. 
+ * 
+ * @author Anwar Shaikh
+ *
+ */
 public class Test_JWPL {
 
 	public static void main(String[] args) throws WikiApiException {

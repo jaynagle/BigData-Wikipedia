@@ -3,6 +3,13 @@ package com;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * This class is the entry point of input dataset parser. It creates multiple
+ * threads and parses input data simultaneously and feeds it to Lucene Indexer.
+ * 
+ * @author Jay Nagle
+ *
+ */
 public class Read {
 	private static String dir = "./parts";
 
