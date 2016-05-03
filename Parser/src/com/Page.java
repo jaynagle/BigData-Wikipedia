@@ -1,5 +1,10 @@
 package com;
-
+/**
+ * This class represents the model to hold every page parsed from the input dataset.
+ * 
+ * @author Jay Nagle
+ *
+ */
 public class Page {
 
 	private String pageID;

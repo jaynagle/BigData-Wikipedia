@@ -18,11 +18,15 @@ import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.BytesRef;
 import org.tartarus.snowball.ext.PorterStemmer;
-
+/**
+ * This class dumps the Lucene index documents to local file system.
+ * 
+ * @author Anwar Shaikh
+ *
+ */
 public class OutputFileWriter {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		try
 		{
 			FSDirectory directory = FSDirectory.open(Paths.get("/media/anwar/825ED72B5ED716AF1/Wikipedia/WikipediaIndex"));
@@ -30,10 +34,6 @@ public class OutputFileWriter {
 			IndexReader indexReader = DirectoryReader.open(directory);
 			String outputDirectory = "/home/anwar/PagesOut_5/";
 			new File(outputDirectory).mkdirs();
-			//String summeryOutputFile = "/home/anwar/PagesOut1/Summary.csv";
-			//File summaryFile = new File(summeryOutputFile);
-			//summaryFile.createNewFile();
-			//FileWriter summaryFileWriter = new FileWriter(summaryFile);
 
 			for(int documentIndex = 0; documentIndex<indexReader.maxDoc(); documentIndex++)
 			{

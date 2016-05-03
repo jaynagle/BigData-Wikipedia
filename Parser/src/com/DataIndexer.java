@@ -24,6 +24,13 @@ import org.hibernate.service.spi.Startable;
 
 import com.google.gson.FieldNamingPolicy;
 
+/**
+ * This class in the entry point of Lucene Index creater. It takes input from
+ * Parser filter.
+ * 
+ * @author Anwar Shaikh
+ *
+ */
 public class DataIndexer extends Thread {
 
 	private static DataIndexer instance = null;

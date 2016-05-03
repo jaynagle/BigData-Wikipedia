@@ -12,6 +12,13 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+/**
+ * This class represents a single thread used for dataset parsing. It reads the
+ * specified BZIP2 file and feeds it to Lucene Indexer.
+ * 
+ * @author Jay Nagle
+ *
+ */
 public class XMLManager implements Runnable {
 	private Thread thread;
 	private String threadName;

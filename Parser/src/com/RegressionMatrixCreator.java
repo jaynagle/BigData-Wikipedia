@@ -24,6 +24,13 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.BytesRef;
 import org.tartarus.snowball.ext.PorterStemmer;
 
+/**
+ * This class creates the regression matrix of most frequent nouns and pages. It
+ * was used for regression analysis.
+ * 
+ * @author Anwar Shaikh
+ *
+ */
 public class RegressionMatrixCreator {
 
 	public static void main(String[] args) throws Exception{

@@ -16,7 +16,8 @@ import re
 
 path = "C:/Users/hp/Desktop/bigdata/txt/"
 data = []
-desired_verbs = ['caused', 'preceeded', 'because', 'due to', 'as a result', 'therefore', 'as a consequence', 'thus', 'because of', 'since', 'consequently', 'causes', 'results','resulted', 'affected', 'increased', 'decreaed', 'rose', 'rise']
+verb_file = open("./set3.txt", "rw+") 
+desired_verbs = verb_file.readlines()
 
 #Performing Stemming
 

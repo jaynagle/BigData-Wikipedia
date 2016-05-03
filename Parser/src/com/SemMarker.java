@@ -12,9 +12,13 @@ import se.lth.cs.srl.pipeline.Pipeline;
 
 public class SemMarker {
 
+	/**
+	 * This class is a part of POC done for semantic role labeling. 
+	 * 
+	 * @author Anwar Shaikh
+	 *
+	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		// Create a data container for a sentence
 		try
 		{
 				SentenceData09 i = new SentenceData09();
