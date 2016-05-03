@@ -1,0 +1,79 @@
+// Creating MAIN_EVENT nodes from CSV 
+LOAD CSV WITH HEADERS FROM "file:///Users/Prateek/Desktop/main_data.csv" as row
+MERGE (event1: MAIN_EVENT { name: row.EE1, year: row.Edate1, sentiment: row.Sentiment1})
+
+// Creating relationships among MAIN_EVENT nodes with correlation values from CSV 
+LOAD CSV WITH HEADERS FROM "file:///Users/Prateek/Desktop/main_data.csv" as row
+MATCH (a: MAIN_EVENT {name: row.EE1}), (b: MAIN_EVENT {name: row.EE2})
+where a.year <= b.year AND tofloat(row.CORR) > 0.25
+CREATE (a)-[:Correlation {value: row.CORR}]->(b)
+
+// deleting self created relationships
+MATCH (a: MAIN_EVENT) - [r] -> (a: MAIN_EVENT)
+delete r
+
+match n 
+detach delete n
+
+// Creating CAUSE and EFFECT nodes along with relationships from CSV
+LOAD CSV WITH HEADERS FROM "file:///Users/Prateek/Desktop/cause_and_effect.csv" AS row
+MATCH (main: MAIN_EVENT {name: row.main_name})
+MERGE (cause: CAUSE {noun: row.Cause_Nouns, description: row.Cause})
+MERGE (effect: EFFECT {noun: row.Effect_Nouns, description: row.Effect})
+MERGE (cause) - [:ACTION {verb: row.Action}] -> (effect)
+MERGE (effect) - [:ASSOCIATED] -> (main)
+
+CREATE (event: SUBJECT {name: 'FINANCIAL CRISIS})
+
+MATCH (a: MAIN_EVENT), (b: SUBJECT)
+MERGE a - [:SUBJECT] -> b
+
+match (a: MAIN_EVENT) - [r: Correlation] -> (b: MAIN_EVENT)
+where r.value = '0'
+delete r
+
+MATCH (a: MAIN_EVENT {name: 'Argentine Great Depression'}), 
+(b: CAUSE {description: 'people'} ),
+(c: EFFECT {description: 'a bank run'})
+return a,b,c
+
+MATCH (j: SUBJECT), (a: MAIN_EVENT {name: '1998-Argentine Great Depression'})<-[r]-(b: EFFECT)<-[s]-(c: CAUSE),
+(x: MAIN_EVENT {name: '2000-Early Recession'})<-[p]-(y: EFFECT)<-[q]-(z: CAUSE),
+(d: MAIN_EVENT {name: '2008-Automotive Industry Crisis'})<-[m]-(e: EFFECT)<-[n]-(f: CAUSE)
+return j,a,b,c,x,y,z,d,e,f
+
+MATCH (j: SUBJECT), (a: MAIN_EVENT {name: '2009-European Debt Crisis'})<-[r]-(b: EFFECT)<-[s]-(c: CAUSE),
+(x: MAIN_EVENT {name: '1929-Great Depression'})<-[p]-(y: EFFECT)<-[q]-(z: CAUSE),
+(d: MAIN_EVENT {name: '2007-Subprime Mortgage Crisis'})<-[m]-(e: EFFECT)<-[n]-(f: CAUSE)
+return j,a,b,c,x,y,z,d,e,f
+
+
+
+MATCH (a: MAIN_EVENT {name: '2008-Automotive Industry Crisis'}) -[r: Correlation]- (b: MAIN_EVENT)
+return a.name,b.name,r.value 
+order by r.value desc limit 10
+--------------------------------------------------------------------------------------------------------------------
+LOAD CSV WITH HEADERS FROM "file:///Users/Prateek/Desktop/main_data.csv" as row
+MATCH (a:EVENT {name: row.Event1}), (b:EVENT {name: row.Event2})
+FOREACH (ignoreMe IN CASE WHEN a.year < b.year THEN [1] ELSE [] END | CREATE (a)-[:Coeff {value: 0}]->(b))
+FOREACH (ignoreMe IN CASE WHEN a.year > b.year THEN [1] ELSE [] END | CREATE (b)-[:Coeff {value: 0}]->(a))
+FOREACH (ignoreMe IN CASE WHEN a.year = b.year THEN [1] ELSE [] END | CREATE (a)-[:Coeff {value: 0}]->(b))
+
+LOAD CSV WITH HEADERS FROM "file:///Users/Prateek/Desktop/main_data.csv" as row
+MATCH (a:EVENT {name: row.Event1}) - [r:Coeff] -> (b:EVENT {name: row.Event2})
+SET r.value = row.Newrelation)
+
+
+match (a:EVENT) - [r] -> (a:EVENT)
+delete r
+
+match a - [r] -> b
+where ID(a) < ID(b)
+return count(r)
+
+match (a:e) - [r] -> (b:e)
+where a.year = b.year
+return count(r)
+
+match n 
+detach delete n
