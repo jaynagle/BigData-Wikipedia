@@ -17,8 +17,9 @@ holder=[]
 for file in dirs:
     files= open(path + "\\" + file,"r")
     text= files.read()
-	text= text.lower() # Converting the text in lower text
+	text= text.lower() # Converting the text in lower text for case sensitivity
     files.close()
+    
     
 	length= len(text)
 	unique= sorted(set(text)) # The vocabulary of a text is just the set of tokens that it uses, since in a set, all duplicates are collapsed together
