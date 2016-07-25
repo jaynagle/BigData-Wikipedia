@@ -56,7 +56,7 @@ print "done"
 
 # Calculating the WUP Similarity matrix
 fileCount = len(fileToNoun)
-Matrix = [[0 for x in range(fileCount)] for x in range(fileCount)] # length of pages in range
+Matrix = [[0 for x in range(fileCount)] for x in range(fileCount)] # length of pages in range to be considered
 print "done"
 
 
